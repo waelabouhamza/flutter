@@ -5,6 +5,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -136,6 +137,7 @@ void main() {
       if (methodCall.method == 'HapticFeedback.vibrate') {
         hapticFeedbackCalls += 1;
       }
+      return null;
     });
 
     // Long press on the scrollbar thumb and expect a vibration after it resizes.
@@ -389,9 +391,16 @@ void main() {
         );
       }
 
+      final FlutterExceptionHandler? handler = FlutterError.onError;
+      FlutterErrorDetails? error;
+      FlutterError.onError = (FlutterErrorDetails details) {
+        error = details;
+      };
+
       await tester.pumpWidget(viewWithScroll());
-      final AssertionError exception = tester.takeException() as AssertionError;
-      expect(exception, isAssertionError);
+      expect(error, isNotNull);
+
+      FlutterError.onError = handler;
     },
   );
 
@@ -474,7 +483,6 @@ void main() {
           child: PrimaryScrollController(
             controller: controller,
             child: CupertinoScrollbar(
-              isAlwaysShown: false,
               controller: controller,
               child: const SingleChildScrollView(
                 child: SizedBox(
@@ -770,6 +778,7 @@ void main() {
       if (methodCall.method == 'HapticFeedback.vibrate') {
         hapticFeedbackCalls += 1;
       }
+      return null;
     });
 
     // Long press on the scrollbar thumb and expect a vibration after it resizes.
@@ -1104,11 +1113,11 @@ void main() {
       find.byType(CupertinoScrollbar),
       paints
         ..rect(
-          rect: const Rect.fromLTRB(0.0, 0.0, 9.0, 594.0),
+          rect: const Rect.fromLTRB(0.0, 3.0, 9.0, 597.0),
         )
         ..line(
-          p1: Offset.zero,
-          p2: const Offset(0.0, 594.0),
+          p1: const Offset(9.0, 3.0),
+          p2: const Offset(9.0, 597.0),
           strokeWidth: 1.0,
         )
         ..rrect(

@@ -57,6 +57,7 @@ void main() {
 
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.navigation, (MethodCall methodCall) async {
       log.add(methodCall);
+      return null;
     });
 
     await tester.pumpWidget(MaterialApp(
@@ -115,6 +116,7 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.navigation, (MethodCall methodCall) async {
       log.add(methodCall);
+      return null;
     });
 
     await tester.pumpWidget(Directionality(
@@ -165,6 +167,7 @@ void main() {
 
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.navigation, (MethodCall methodCall) async {
       log.add(methodCall);
+      return null;
     });
 
     await tester.pumpWidget(MaterialApp(
@@ -223,6 +226,7 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.navigation, (MethodCall methodCall) async {
       log.add(methodCall);
+      return null;
     });
 
     await tester.pumpWidget(MaterialApp(
@@ -266,6 +270,7 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.navigation, (MethodCall methodCall) async {
       log.add(methodCall);
+      return null;
     });
 
     final PlatformRouteInformationProvider provider = PlatformRouteInformationProvider(
@@ -286,6 +291,15 @@ void main() {
       routerDelegate: delegate,
     ));
     expect(find.text('initial'), findsOneWidget);
+    expect(log, <Object>[
+      isMethodCall('selectMultiEntryHistory', arguments: null),
+      isMethodCall('routeInformationUpdated', arguments: <String, dynamic>{
+        'location': 'initial',
+        'state': null,
+        'replace': false,
+      }),
+    ]);
+    log.clear();
 
     // Triggers a router rebuild and verify the route information is reported
     // to the web engine.
